@@ -1,7 +1,23 @@
 <template>
+    <figure>
+        <div class="image">
+            <img v-bind:src="artist.image" :alt="artist.name" />
+        </div>
+        <figcaption>
+            <h3>{{ artist.name }}</h3>
+            <p>Canciones: {{ artist.tracks.length }}</p>
+        </figcaption>
+    </figure>
 </template>
 
 <script setup>
+const props = defineProps({
+    artist: {
+
+        type: Object,
+        required: true,
+    }
+});
 </script>
 
 <style scoped>

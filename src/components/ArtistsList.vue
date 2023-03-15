@@ -1,7 +1,33 @@
 <template>
+        <main>
+            <section class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" v-model="filter"/>
+            </section>
+            <section class="artists">
+                <Artists :artist="artist" v-for="artist in list()" :key="artist.id"></Artists>
+            </section>
+        </main>
 </template>
 
 <script setup>
+import {ref, onMounted } from 'vue';
+import {useHttpStore} from "../stores/http";
+import Artists from "./Artists.vue";
+
+//Envuelve el objeto base y le añade mas propiedades. Coge los cambios
+const artists = ref([]); //reactive se utiliza para objetos
+
+const filter= ref("");
+
+const list = () => artists.value.filter(artist => artist.name.toLowerCase().includes(filter.value.toLowerCase()))
+
+onMounted(async ()=>{
+
+    const response = await useHttpStore().get("http://localhost:3000/artists")
+    artists.value= response;
+});
+
 </script>
 
 <style scoped>
